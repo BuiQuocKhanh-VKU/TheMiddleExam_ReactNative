@@ -15,7 +15,7 @@ import {
    TouchableWithoutFeedback,
    View,
 } from "react-native";
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 export default function RegisterScreen({ navigation }: any) {
    const [username, setUsername] = useState("");
    const [email, setEmail] = useState("");
@@ -106,21 +106,21 @@ export default function RegisterScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
    container: { flex: 1, padding: 16, justifyContent: "center", backgroundColor: "#fff" },
-   title: { fontSize: 22, fontWeight: "700", textAlign: "center", marginBottom: 20 },
-   input: { borderWidth: 1, borderColor: "#ddd", borderRadius: 10, padding: 12, marginVertical: 6 },
-   button: { backgroundColor: "#0a7ea4", padding: 14, borderRadius: 10, alignItems: "center" },
+   title: { fontSize:30, fontWeight: "700", textAlign: "center", marginBottom: 40 },
+   input: { borderWidth: 1, borderColor: "#b0b9baff", borderRadius: 10, padding: 12, marginVertical: 6 },
+   button: { backgroundColor: "#0a7ea4",marginHorizontal: 80, marginTop: 20, padding: 14, borderRadius: 10, alignItems: "center" },
    buttonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
    imagePicker: {
       alignSelf: "center",
-      width: 120,
-      height: 120,
-      borderRadius: 60,
+      width: 125,
+      height: 125,
+      borderRadius: 70,
       borderWidth: 1,
-      borderColor: "#ddd",
+      borderColor: "#b0b9baff",
       alignItems: "center",
       justifyContent: "center",
       overflow: "hidden",
-      backgroundColor: "#fafafa",
+      backgroundColor: "#f1f9fcff",
       marginBottom: 8,
    },
    preview: { width: "100%", height: "100%" },

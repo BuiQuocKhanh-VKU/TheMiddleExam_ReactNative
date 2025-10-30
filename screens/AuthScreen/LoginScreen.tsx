@@ -31,13 +31,13 @@ export default function LoginScreen({ navigation }: any) {
       }
       try {
          setLoading(true);
-         // vẫn dùng Firebase Auth để xác thực tài khoản tồn tại
+
          await signInWithEmailAndPassword(auth, emailNorm, password);
 
          if (isAdmin(emailNorm, password)) {
-            navigation.replace("Admin"); // vào màn admin nếu thỏa điều kiện hard-code
+            navigation.replace("Admin");
          } else {
-            navigation.replace("Client"); // còn lại là client
+            navigation.replace("Client");
          }
       } catch (e: any) {
          Alert.alert("Lỗi", e?.message ?? "Đăng nhập thất bại");
@@ -48,8 +48,8 @@ export default function LoginScreen({ navigation }: any) {
 
    return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-         <View style={styles.container}>
-            <Text style={styles.title}>Đăng nhập</Text>
+         <View style={styles.container}>      
+               <Text style={styles.title}>Đăng nhập</Text>            
             <TextInput
                style={styles.input}
                placeholder="Email"
@@ -79,8 +79,8 @@ export default function LoginScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
    container: { flex: 1, justifyContent: "center", padding: 16, backgroundColor: "#fff" },
-   title: { fontSize: 22, fontWeight: "700", textAlign: "center", marginBottom: 20 },
-   input: { borderWidth: 1, borderColor: "#ddd", borderRadius: 10, padding: 12, marginVertical: 6 },
-   button: { backgroundColor: "#0a7ea4", padding: 14, borderRadius: 10, alignItems: "center" },
+   title: { fontSize: 30, fontWeight: "700", textAlign: "center", marginBottom: 60 },
+   input: { borderWidth: 1, borderColor: "#b0b9baff", borderRadius: 10, padding: 12, marginVertical: 6 },
+   button: { backgroundColor: "#0a7ea4", marginHorizontal: 80 , marginTop: 20, padding: 14, borderRadius: 10, alignItems: "center" },
    buttonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
 });

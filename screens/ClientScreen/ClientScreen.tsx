@@ -1,5 +1,6 @@
 import { auth, db } from "@/firebase-config";
 import { askGemini } from "@/utils/gemini";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
@@ -23,7 +24,7 @@ type UserDoc = {
    image?: string | null; // base64
 };
 
-export default function ClientScreen() {
+export default function ClientScreen({ navigation }: any) {
    const uid = auth.currentUser?.uid ?? ""; // yêu cầu đã đăng nhập
    const docRef = useMemo(() => doc(db, "users", uid), [uid]);
 
@@ -34,6 +35,7 @@ export default function ClientScreen() {
    const [q, setQ] = useState("");
    const [ans, setAns] = useState("");
    const [loading, setLoading] = useState(false);
+   const [showPassword, setShowPassword] = useState(false);
 
    // Quyền media + subscribe 1 document của chính mình
    useEffect(() => {
@@ -148,11 +150,29 @@ export default function ClientScreen() {
       }
    };
 
+   const handleBack = () => {
+      if (navigation.canGoBack()) {
+         navigation.goBack();
+      } else if (navigation.getParent?.() && navigation.getParent()?.canGoBack()) {
+         navigation.getParent()?.goBack();
+      } else {
+         navigation.navigate("Login");
+      }
+   };
+
    return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
          <View style={styles.container}>
-            <Text style={styles.title}>Hồ sơ của tôi</Text>
-
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 }}>
+               <Ionicons
+                  style={{ flex: 0.47 }}
+                  name="arrow-back-circle-outline"
+                  size={30}
+                  color="black"
+                  onPress={handleBack}
+               />
+               <Text style={styles.title}>Hồ sơ của tôi</Text>
+            </View>
             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                {imageBase64 ? (
                   <Image source={{ uri: `data:image/jpeg;base64,${imageBase64}` }} style={styles.preview} />
@@ -170,23 +190,45 @@ export default function ClientScreen() {
                autoCapitalize="none"
                keyboardType="email-address"
             />
-            <TextInput
-               style={styles.input}
-               placeholder="Mật khẩu (lưu Firestore)"
-               value={password}
-               onChangeText={setPassword}
-               secureTextEntry
-            />
+            <View style={{ position: "relative" }}>
+               <TextInput
+                  style={styles.input}
+                  placeholder="Mật khẩu (lưu Firestore)"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+               />
+               <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={{ position: "absolute", right: 10, top: 10, padding: 5 }}
+               >
+                  <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={22} color="#555" />
+               </TouchableOpacity>
+            </View>
             <View style={{ padding: 16 }}>
                <TextInput
                   placeholder="Hỏi AI (ví dụ: Cách đổi ảnh đại diện?)"
                   value={q}
                   onChangeText={setQ}
-                  style={{ borderWidth: 1, borderColor: "#ccc", borderRadius: 10, padding: 12, marginBottom: 8 }}
+                  style={{
+                     borderWidth: 1,
+                     borderColor: "#ccc",
+                     borderRadius: 10,
+                     padding: 12,
+                     marginHorizontal: 20 ,
+                     marginBottom: 8,
+                  }}
                />
                <TouchableOpacity
                   onPress={onAsk}
-                  style={{ backgroundColor: "#0a7ea4", padding: 12, borderRadius: 10, alignItems: "center" }}
+                  style={{
+                     backgroundColor: "#0a7ea4",
+                     padding: 12,
+                     borderRadius: 10,
+                     marginHorizontal: 20,
+                     alignItems: "center",
+                  }}
                   disabled={loading}
                >
                   {loading ? (
@@ -241,13 +283,19 @@ const styles = StyleSheet.create({
       fontSize: 16,
       backgroundColor: "#fafafa",
    },
-   button: { backgroundColor: "#0a7ea4", paddingVertical: 14, borderRadius: 10, alignItems: "center" },
+   button: {
+      backgroundColor: "#0a7ea4",
+      paddingVertical: 14,
+      borderRadius: 10,
+      marginHorizontal: 90,
+      alignItems: "center",
+   },
    buttonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
    imagePicker: {
       alignSelf: "center",
-      width: 120,
-      height: 120,
-      borderRadius: 60,
+      width: 130,
+      height: 130,
+      borderRadius: 70,
       borderWidth: 1,
       borderColor: "#ddd",
       alignItems: "center",

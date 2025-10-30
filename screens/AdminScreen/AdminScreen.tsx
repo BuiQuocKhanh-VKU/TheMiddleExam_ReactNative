@@ -1,4 +1,5 @@
 import { db } from "@/firebase-config";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { collection, deleteDoc, doc, onSnapshot, query, updateDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -22,7 +23,7 @@ type UserItem = {
    image?: string | null; // base64
 };
 
-export default function AdminScreen() {
+export default function AdminScreen({ navigation }: any) {
    const [users, setUsers] = useState<UserItem[]>([]);
    const [busyId, setBusyId] = useState<string | null>(null);
 
@@ -97,6 +98,16 @@ export default function AdminScreen() {
       ]);
    };
 
+   const handleBack = () => {
+      if (navigation.canGoBack()) {
+         navigation.goBack();
+      } else if (navigation.getParent?.() && navigation.getParent()?.canGoBack()) {
+         navigation.getParent()?.goBack();
+      } else {
+         navigation.navigate("Login"); 
+      }
+   };
+
    const filteredUsers = useMemo(() => {
       const kw = search.trim().toLowerCase();
       const filtered = kw ? users.filter((u) => (u.username || "").toLowerCase().includes(kw)) : users;
@@ -138,8 +149,16 @@ export default function AdminScreen() {
 
    return (
       <View style={{ flex: 1, padding: 16 }}>
-         <Text style={styles.title}>Admin • Tất cả người dùng</Text>
-
+         <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 }}>
+            <Ionicons
+               style={{ flex: 0.5 }}
+               name="arrow-back-circle-outline"
+               size={30}
+               color="black"
+               onPress={handleBack}
+            />
+            <Text style={styles.title}>Admin • Tất cả người dùng</Text>
+         </View>
          {/* Search + sort bar */}
          <View style={{ gap: 8, marginBottom: 12 }}>
             <TextInput style={styles.search} placeholder="🔍 Tìm theo tên..." value={search} onChangeText={setSearch} />
@@ -199,9 +218,7 @@ export default function AdminScreen() {
                      </TouchableOpacity>
                   </View>
 
-                  <Text style={styles.note}>
-                     Khuyến nghị: Không được tiết lộ mật khẩu của users 
-                  </Text>
+                  <Text style={styles.note}>Khuyến nghị: Không được tiết lộ mật khẩu của users</Text>
                </View>
             </View>
          </Modal>
