@@ -43,4 +43,4 @@ app-example
 /android
 
 lib/
-firebase-config.js
+.firebase-config.js
