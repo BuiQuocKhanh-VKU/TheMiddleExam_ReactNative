@@ -1,7 +1,17 @@
 import { auth } from "@/firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import {
+   ActivityIndicator,
+   Alert,
+   Keyboard,
+   StyleSheet,
+   Text,
+   TextInput,
+   TouchableOpacity,
+   TouchableWithoutFeedback,
+   View,
+} from "react-native";
 
 const ADMIN_EMAILS = new Set(["admin1@gmail.com", "admin2@gmail.com"]);
 const ADMIN_PASSWORD = "123456";
